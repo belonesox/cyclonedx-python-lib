@@ -278,6 +278,7 @@ class HashAlgorithm(str, Enum):
     SHA3_256 = 'SHA3-256'
     SHA3_384 = 'SHA3-384'  # Only supported in >= 1.2
     SHA3_512 = 'SHA3-512'
+    STREEBOG_256 = 'STREEBOG-256'
 
 
 class _HashTypeRepositorySerializationHelper(serializable.helpers.BaseHelper):
@@ -304,7 +305,9 @@ class _HashTypeRepositorySerializationHelper(serializable.helpers.BaseHelper):
     __CASES[SchemaVersion1Dot3] = __CASES[SchemaVersion1Dot2]
     __CASES[SchemaVersion1Dot4] = __CASES[SchemaVersion1Dot3]
     __CASES[SchemaVersion1Dot5] = __CASES[SchemaVersion1Dot4]
-    __CASES[SchemaVersion1Dot6] = __CASES[SchemaVersion1Dot5]
+    # __CASES[SchemaVersion1Dot6] = __CASES[SchemaVersion1Dot5]
+    # __CASES[SchemaVersion1Dot6] = __CASES[SchemaVersion1Dot5] | {
+    __CASES[SchemaVersion1Dot6] = frozenset({ HashAlgorithm.STREEBOG_256, })
 
     @classmethod
     def __prep(cls, hts: Iterable['HashType'], view: Type[serializable.ViewType]) -> Generator['HashType', None, None]:
@@ -375,6 +378,7 @@ _MAP_HASHLIB: Dict[str, HashAlgorithm] = {
     'sha3_256': HashAlgorithm.SHA3_256,
     'sha3_384': HashAlgorithm.SHA3_384,
     'sha3_512': HashAlgorithm.SHA3_512,
+    'streebog_256': HashAlgorithm.STREEBOG_256,
     # shake_128:
     # shake_256:
 }
